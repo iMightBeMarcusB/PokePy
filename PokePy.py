@@ -28,9 +28,20 @@ bottom_b = 528
 left_b = 425
 right_b = 611
 
+
+attak1_b = (45, 450)
+attak2_b = (281, 450)
+attak3_b = (45, 510 )
+attak4_b = (281, 510)
+left_a_b = 15
+right_a_b = 251
+upper_a_b = 450
+bottom_a_b = 510
+
+
 ########### TEXT MESSAGES ###########
 
-no_run = 'you can´t run from a batlle'
+
 
 
 
@@ -50,6 +61,18 @@ fgt_options = scale(fgt_options, (400, 180))
 arrow = scale(arrow, (20, 38))
 atk_bar = scale(atk_bar, (800, 180))
 
+########### DRAW ###########
+
+
+def write_text(ttf, size, text, x, y, color):
+
+    pygame.font.init()
+    font = pygame.font.Font(ttf, size)
+    text_object = font.render(text, True, (color))
+    textRect = text_object.get_rect()
+    textRect.topleft = (x, y)
+    win.blit(text_object, textRect)
+
 ########### WINDOW ###########
 
 class Window:
@@ -67,27 +90,17 @@ win = pygame.display.set_mode(w.returnWinSize())
 bs = True
 
 
-def draw_text(surf, text, size, x, y):
-    font = pygame.font.Font('PKMN RBYGSC.ttf', size)
-    text_surface = font.render(text, True, (0,0,0))
-    text_rect = text_surface.get_rect()
-    text_rect.midtop = (x,y)
-    surf.blit(text_surface, text_rect)
-
-
 ########### ARROW ###########
 
 class Arrow:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.position = (self.x, self.y)
 
     def draw(self):
         win.blit(arrow, (self.x, self.y))
-        self.move()
 
-    def move(self):
+    def moveBO(self):
 
         pressed = pygame.key.get_pressed()
 
@@ -100,15 +113,31 @@ class Arrow:
         if pressed[pygame.K_DOWN] and self.y == upper_b:
             self.y += 60
 
+    def moveAO(self):
+        pressed = pygame.key.get_pressed()
+
+        if pressed[pygame.K_RIGHT] and self.x == left_a_b:
+            self.x += 236
+        if pressed[pygame.K_LEFT] and self.x == right_a_b:
+            self.x -= 236
+        if pressed[pygame.K_UP] and self.y == bottom_a_b:
+            self.y -= 60
+        if pressed[pygame.K_DOWN] and self.y == upper_a_b:
+            self.y += 60
+
 def select():
+
     pressed = pygame.key.get_pressed()
-    if pressed[pygame.K_RETURN] and battle_arrow.position == fight_b:
-        fight()
-    if pressed[pygame.K_RETURN] and battle_arrow.position == run_b:
-        draw_text(win, str(no_run), 400, 420, 120)
+
+    if pressed[pygame.K_RETURN] and (battle_arrow.x, battle_arrow.y) == fight_b:
+        while True:
+            fight()
+            if fight() == False:
+                break
 
 
 battle_arrow = Arrow(left_b, upper_b)
+attak_arrow = Arrow(15, 450)
 
 def battleScreen():
 
@@ -117,12 +146,26 @@ def battleScreen():
     win.blit(fgt_options, (400, 420))
 
     battle_arrow.draw()
+    battle_arrow.moveBO()
     select()
     pygame.display.update()
 
+
 def fight():
-    win.blit(battle, (0,0))
+
+    win.blit(battle, (0, 0))
     win.blit(atk_bar, (0, 420))
+
+    write_text('./Font/joystix monospace.ttf', 20, 'passa zap', 45, 450, (0,0,0))
+    write_text('./Font/joystix monospace.ttf', 20, 'quick attack', 281, 450, (0,0,0))
+    write_text('./Font/joystix monospace.ttf', 20, 'thunder wave', 45, 510, (0,0,0))
+    write_text('./Font/joystix monospace.ttf', 20, 'bite', 281, 510, (0,0,0))
+
+    print(attak_arrow.x)
+    print(attak_arrow.y)
+
+    attak_arrow.draw()
+    attak_arrow.moveAO()
 
     pygame.display.update()
 
@@ -135,6 +178,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
     battleScreen()
 
 
