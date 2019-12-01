@@ -79,8 +79,6 @@ class Arrow:
         self.y = y
         self.position = (self.x, self.y)
 
-
-
 battle_arrow = Arrow(left_a, upper_a)
 attack_arrow = Arrow(left_attack_a, upper_attack_a)
 
@@ -133,7 +131,7 @@ class Game:
 
 
 
-class GameState(object):
+class GameState:
     """
     Parent class for individual game states to inherit from.
     """
@@ -142,9 +140,7 @@ class GameState(object):
         self.done = False
         self.quit = False
         self.next_state = None
-        self.screen_rect = pygame.display.get_surface().get_rect()
         self.persist = {}
-        self.font = pygame.font.Font(None, 24)
 
     def startup(self, persistent):
         """
@@ -176,7 +172,7 @@ class GameState(object):
         pass
 
     @staticmethod
-    def write_text(insertion,surface, ttf, size, text, x, y, color):
+    def write_text(insertion, surface, ttf, size, text, x, y, color):
         pygame.font.init()
         font = pygame.font.Font(ttf, size)
         text_object = font.render(text, True, (color))
@@ -227,13 +223,10 @@ class PokemonSelection(GameState):
         pass
 
 
-class BattleOptions():
+class BattleOptions(GameState):
 
     def __init__(self):
         super().__init__()
-        self.quit = False
-        self.done = False
-
 
     def draw(self, surface):
         surface.blit(battle_arena, (0, 0))
@@ -275,8 +268,6 @@ class AttackOptions(GameState):
 
     def __init__(self):
         super().__init__()
-        self.done = False
-        self.quit = False
 
     def draw(self, surface):
         surface.blit(battle_arena, (0, 0))
@@ -296,12 +287,28 @@ class AttackOptions(GameState):
 
         pressed = pygame.key.get_pressed()
 
+        if pressed[pygame.K_RIGHT] and attack_arrow.x == left_attack_a:
+            attack_arrow.x -= left_attack_a - right_attack_a
+        if pressed[pygame.K_LEFT] and attack_arrow.x == right_attack_a:
+            attack_arrow.x += left_attack_a - right_attack_a
+        if pressed[pygame.K_UP] and attack_arrow.y == bottom_attack_a:
+            attack_arrow.y -= bottom_attack_a - upper_attack_a
+        if pressed[pygame.K_DOWN] and attack_arrow.y == upper_attack_a:
+            attack_arrow.y += bottom_attack_a - upper_attack_a
+
+        if pressed[pygame.K_ESCAPE]:
+            self.done = True
+            self.next_state = 'BATTLE OPTIONS'
+
+        def update(self, dt):
+            pass
 
 
 
 
 if __name__ == "__main__":
     pygame.init()
+    pygame.display.set_caption('PokePy')
     screen = pygame.display.set_mode((800, 600))
     states = {"SPLASH": SplashScreen(),
               "BATTLE OPTIONS": BattleOptions(),
