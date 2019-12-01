@@ -3,30 +3,44 @@ import pygame
 ######### COLORS #########
 
             #R    G    B
-BLUE =     (0,    0,   255)
-GREEN =    (0,    128, 0  )
-PURPLE =   (128,  0,   128)
+BLUE =     (0,    0,   255 )
+GREEN =    (0,    128, 0   )
+PURPLE =   (128,  0,   128 )
 RED =      (255,  0,    0  )
 YELLOW =   (255,  255,  0  )
 NAVYBLUE = (0,    0,    128)
 WHITE =    (255,  255,  255)
-BLACK =    (0,    0,    0  )
+BLACK =    (0,     0,   0  )
 ALPHA =    (255,   0,   255)
+GRAY =     (72,   72,   72 )
 
-########### BUTTONS ###########
+########### BUTTONS AND ARROWS ###########
 
-fight_b = (425, 468)
-pokemon_b = (425, 528)
-bag_b = (611, 468)
-run_b = (611, 528)
-upper_b = 468
-bottom_b = 528
-left_b = 425
-right_b = 611
+#POSIÇÃO DAS OPÇÕES DE BATALHA
+fight_a = (425, 468)
+pokemon_a = (425, 528)
+bag_a = (611, 468)
+run_a = (611, 528)
+upper_a = 468
+bottom_a = 528
+left_a = 425
+right_a = 611
+
+#POSIÇÃO DOS BOTÕES DE ATAQUE
+left_attack_b = 50
+right_attack_b = 300
+upper_attack_b = 460
+bottom_attack_b = 520
+
+#POSIÇÕES DA SETA DE ATAQUE
+left_attack_a = left_attack_b - 25
+right_attack_a = right_attack_b - 25
+upper_attack_a = upper_attack_b - 5
+bottom_attack_a = bottom_attack_b - 5
 
 ######### FONTS #########
 
-joystix_monospace = ('./Font/joystix monospace.ttf')
+monospace = ('./Font/joystix monospace.ttf')
 
 ######### ANTI REPETITION #########
 
@@ -67,7 +81,8 @@ class Arrow:
 
 
 
-battle_arrow = Arrow(left_b, upper_b)
+battle_arrow = Arrow(left_a, upper_a)
+attack_arrow = Arrow(left_attack_a, upper_attack_a)
 
 ########### GAMEPLAY ###########
 
@@ -161,12 +176,19 @@ class GameState(object):
         pass
 
     @staticmethod
-    def write_text(surface, ttf, size, text, x, y, color):
+    def write_text(insertion,surface, ttf, size, text, x, y, color):
         pygame.font.init()
         font = pygame.font.Font(ttf, size)
         text_object = font.render(text, True, (color))
-        text_rect = text_object.get_rect(center=(x, y))
-        surface.blit(text_object, text_rect)
+
+        if insertion == 'center':
+            text_rect = text_object.get_rect(center=(x, y))
+            surface.blit(text_object, text_rect)
+
+        if insertion == 'lefttop':
+            text_rect = text_object.get_rect()
+            text_rect.topleft = (x, y)
+            surface.blit(text_object, text_rect)
 
 
 
@@ -187,14 +209,28 @@ class SplashScreen(GameState):
         surface.fill(BLACK)
         surface.blit(title, (29,30))
         surface.blit(python, (550, 30))
-        self.write_text(surface, joystix_monospace, 25, 'PRESS ANYTHING TO START', 400, 500, WHITE )
+        self.write_text('center', surface, monospace, 25, 'PRESS ANYTHING TO START', 400, 500, WHITE )
 
+
+
+class PokemonSelection(GameState):
+
+
+    def __init__(self):
+        super().__init__()
+        self.done = False
+        self.quit = False
+
+
+
+    def update(self, dt):
+        pass
 
 
 class BattleOptions():
 
     def __init__(self):
-        super(BattleOptions, self).__init__()
+        super().__init__()
         self.quit = False
         self.done = False
 
@@ -210,20 +246,56 @@ class BattleOptions():
 
         if event.type == pygame.QUIT:
             self.quit = True
+            self.done = True
 
         pressed = pygame.key.get_pressed()
 
-        if pressed[pygame.K_RIGHT] and battle_arrow.x == left_b:
+        if pressed[pygame.K_RIGHT] and battle_arrow.x == left_a:
             battle_arrow.x += 186
-        if pressed[pygame.K_LEFT] and battle_arrow.x == right_b:
+        if pressed[pygame.K_LEFT] and battle_arrow.x == right_a:
             battle_arrow.x -= 186
-        if pressed[pygame.K_UP] and battle_arrow.y == bottom_b:
+        if pressed[pygame.K_UP] and battle_arrow.y == bottom_a:
             battle_arrow.y -= 60
-        if pressed[pygame.K_DOWN] and battle_arrow.y == upper_b:
+        if pressed[pygame.K_DOWN] and battle_arrow.y == upper_a:
             battle_arrow.y += 60
+
+        if pressed[pygame.K_RETURN] and (battle_arrow.x, battle_arrow.y) == fight_a:
+            self.done = True
+            self.next_state = 'ATTACK OPTIONS'
+
+    def persist(self):
+        pass
+
 
     def update(self, dt):
         pass
+
+
+class AttackOptions(GameState):
+
+    def __init__(self):
+        super().__init__()
+        self.done = False
+        self.quit = False
+
+    def draw(self, surface):
+        surface.blit(battle_arena, (0, 0))
+        surface.blit(atk_bar, (0, 420))
+        surface.blit(arrow, (attack_arrow.x, attack_arrow.y))
+
+        self.write_text('lefttop', surface, monospace, 20, 'passa zap', left_attack_b, upper_attack_b, GRAY)
+        self.write_text('lefttop', surface, monospace, 20, 'quick attack', right_attack_b, upper_attack_b, GRAY)
+        self.write_text('lefttop', surface, monospace, 20, 'thunder wave', left_attack_b, bottom_attack_b, GRAY)
+        self.write_text('lefttop', surface, monospace, 20, 'bite', right_attack_b, bottom_attack_b, GRAY)
+
+    def get_event(self, event):
+
+        if event.type == pygame.QUIT:
+            self.quit = True
+            self.done = True
+
+        pressed = pygame.key.get_pressed()
+
 
 
 
@@ -232,7 +304,8 @@ if __name__ == "__main__":
     pygame.init()
     screen = pygame.display.set_mode((800, 600))
     states = {"SPLASH": SplashScreen(),
-              "BATTLE OPTIONS": BattleOptions()}
+              "BATTLE OPTIONS": BattleOptions(),
+              "ATTACK OPTIONS": AttackOptions()}
     game = Game(screen, states, "SPLASH")
     game.run()
     pygame.quit()
