@@ -191,20 +191,29 @@ class SplashScreen(GameState):
         surface.blit(python, (550, 30))
         self.write_text('center', surface, monospace, 25, 'PRESS ANYTHING TO START', 400, 500, WHITE )
 
-
-
-class PokemonSelection(GameState):
-
-
+class PvPPvE(GameState):
     def __init__(self):
         super().__init__()
-        self.done = False
-        self.quit = False
+        self.next_state = 'SELECT POKEMON'
 
+    def startup(self, persistent):
+        pass
 
-
+    def get_event(self, event):
+        pass
+    
     def update(self, dt):
         pass
+
+    def draw(self, surface):
+        pass
+
+class SelectPokemon(GameState):
+    def __init__(self):
+        super().__init__()
+        self.next_state = 'BATTLE OPTIONS'
+
+
 
 
 class BattleOptions(GameState):
