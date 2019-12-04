@@ -127,71 +127,6 @@ Graveler = pokemon("Graveler", Tackle, Rock_Throw, Earthquake, Explosion, "Rock"
 
 Pidgeot = pokemon("Pidgeot", Quick_Attack, Razor_Wind, Agility, Wing_Attack, "Flying", 120, 20, 50, 20)
 
-#Definindo uma função especial para Burn (Queimará os inimigos causando 5 de dano para as proximas 4 partidas, se você tiver sorte e Seed que não depende da sorte.
-
-def burn(Pokemon):
-    return [Pokemon, 5]
-
-def seed(Pokemon, HP0):
-    return [Pokemon, int((1/8)*HP0)]
-
-def paralized(attack,Pokemon1, Pokemon2):
-    cursed = []
-    Leech_Seed_Damage = 0
-    if Pokemon1.HP > 0 and Pokemon2.HP > 0:
-
-        # Função que permite a chamada do ataque e permite a checagem se ele traz alguma "maldição"
-        Attack1 = attack
-
-        if Pokemon1.speed >= Pokemon2.speed or Attack1 == Quick_Attack:
-            info1 = Special(Attack1, Pokemon2, Pokemon1, 1, 1)
-
-            if Attack1.special == "Physical":
-                if info1[0] > Pokemon2.defense:
-                    Pokemon2.HP -= info1[0] - Pokemon2.defense
-
-            elif Attack1.special == "Special":
-                if info1[0] > Pokemon2.special_defense and not Attack1 == Leech_Seed:
-                    Pokemon2.HP -= info1[0] - Pokemon2.special_defense
-                elif Attack1 == Leech_Seed:
-                    Leech_Seed_Damage = int((1 / 8) * HP2)
-                    Pokemon2.HP -= Leech_Seed_Damage
-                1
-            elif Attack1.special == "Status":
-                if Attack1 == Growl:
-                    Pokemon2.defense -= 12
-                elif Attack1 == Withdraw:
-                    Pokemon1.defense += 12
-
-            if len(info1) > 1:
-                if info1[1] not in cursed:
-                    cursed.append(info1[1])
-
-            if len(cursed) > 0:
-                for c in range(len(cursed)):
-                    cursed[c][0].HP -= cursed[c][1]
-
-                    if cursed[c][1] == Leech_Seed_Damage and cursed[c][0] == Pokemon1:
-                        Pokemon2.HP += int(Leech_Seed_Damage / 2)
-                    elif cursed[c][1] == Leech_Seed_Damage and cursed[c][0] == Pokemon2:
-                        Pokemon1.HP += int(Leech_Seed_Damage / 2)
-                    if len(cursed[c]) > 3:
-                        if cursed[c][3] == "Thunder Wave":
-                            for i in range(0, 3):
-                                Print("Só ", Pokemon1.pokemon_name, "pode jogar")
-                                if cursed[c][0] == Pokemon1:
-                                    Paralized(pcs_turn(Pokemon2), Pokemon1, Pokemon2)
-                                elif cursed[c][0] == Pokemon2:
-                                    Paralized(player1(Pokemon1), Pokemon1, Pokemon2)
-
-                    for i in range(0, len(cursed) - len(turn)):
-                        turn.append(0)
-                    turn[c] += 1
-                if turn[c] == 4:
-                    cursed.pop(c)
-    return Pokemon2.HP
-
-
 
 def player1(Pokemon1):
     # Escolha seu ataque
@@ -205,7 +140,6 @@ def player1(Pokemon1):
     elif a == 4:
         Attack0 = Pokemon1.attack4
     return Attack0
-
 
 def pcs_turn(Pokemon2):
 
@@ -223,29 +157,17 @@ def pcs_turn(Pokemon2):
     return Attack0
 
 def Special(attack, Pokemon2, Pokemon1, HP0, HP1):
-    N = int((48 * Pokemon1.HP) / HP1)
-
-    if attack == Leech_Seed:
-
-        return [int((1/8)*HP0), seed(Pokemon2, HP0)]
-
-    elif attack == Ember:
-        if sorte(4):
-            return [Ember.power, burn(Pokemon2)]
-        else:
-            return [Ember.power]
-
-    elif attack == Reversal or attack == Flail:
-        return [96 - N]
-    elif attack == Thunder_Wave:
-        if sorte(1):
-            return[0, [Pokemon2, 0,"Thunder Wave"]]
-        else:
-            return[0]
-    else:
         return [attack.power]
 
-turn = []
+
+
+
+
+
+
+
+
+
 
 
 def fight_1P(Pokemon1,Pokemon2):
@@ -279,9 +201,6 @@ def fight_1P(Pokemon1,Pokemon2):
                 elif Attack1 == Withdraw:
                     Pokemon1.defense += 12
 
-            if len(info1) > 1:
-                if info1[1] not in cursed:
-                    cursed.append(info1[1])
 
             # Colocar aqui as informações de quando um round passa pro round do outro ou seja, quanto de HP perdeu e tal
             info2 = Special(Attack2, Pokemon1, Pokemon2, HP1, HP2)
@@ -304,42 +223,16 @@ def fight_1P(Pokemon1,Pokemon2):
                     Pokemon1.defense += 12
 
 
-            if len(info2) > 1:
-                if info2[1] not in cursed:
-                    cursed.append(info2[1])
-
-            if len(cursed) > 0:
-                for c in range(len(cursed)):
-                    cursed[c][0].HP -= cursed[c][1]
-
-                    if cursed[c][1] == Leech_Seed_Damage and cursed[c][0] == Pokemon1:
-                        Pokemon2.HP += int(Leech_Seed_Damage/2)
-                    elif cursed[c][1] == Leech_Seed_Damage and cursed[c][0] == Pokemon2:
-                        Pokemon1.HP += int(Leech_Seed_Damage/2)
-
-                    if len(cursed[c]) > 2:
-                        if cursed[c][2] == "Thunder Wave":
-                            for i in range(0, 3):
-                                print("Só",Pokemon1.pokemon_name,"pode jogar")
-                                if Pokemon2 not in cursed and Pokemon1 not in cursed:
-                                    if cursed[c][0] == Pokemon1:
-                                        Pokemon1.HP = paralized(pcs_turn(Pokemon2), Pokemon1, Pokemon2)
-                                    elif cursed[c][0] == Pokemon2:
-                                        Pokemon2.HP = paralized(player1(Pokemon1), Pokemon1, Pokemon2)
-                                if i < 2:
-                                    print(Pokemon1.HP)
-                                    print(Pokemon2.HP)
-                            cursed.pop(c)
-
-
-
-                    for i in range(0, len(cursed)-len(turn)):
-                        turn.append(0)
-                    if len(cursed)> 0:
-                        turn[c] += 1
-                        if turn[c] >= 4:
-                            cursed.pop(c)
-
+        elif Pokemon1.HP <= 0:
+            Pokemon1.HP = 0
+            print(Pokemon1.HP)
+            print(Pokemon2.HP)
+            break
+        elif Pokemon2.HP <=0:
+            Pokemon2.HP = 0
+            print(Pokemon2.HP)
+            print(Pokemon1.HP)
+            break
          #por conta da velocidade
         elif Pokemon2.speed > Pokemon1.speed or Attack2 == Quick_Attack:
             info1 = Special(Attack1, Pokemon2, Pokemon1, HP2, HP1)
@@ -361,9 +254,7 @@ def fight_1P(Pokemon1,Pokemon2):
                 elif Attack1 == Withdraw:
                     Pokemon1.defense += 12
 
-            if len(info1) > 1:
-                if info1[1] not in cursed:
-                    cursed.append(info1[1])
+
 
             info2 = Special(Attack2, Pokemon1, Pokemon2, HP1, HP2)
 
@@ -384,33 +275,8 @@ def fight_1P(Pokemon1,Pokemon2):
                 elif Attack1 == Withdraw:
                     Pokemon1.defense += 12
 
-            if len(info2) > 1:
-                if info2[1] not in cursed:
-                    cursed.append(info2[1])
 
-            if len(cursed) > 0:
-                for c in range(len(cursed)):
-                    cursed[c][0].HP -= cursed[c][1]
 
-                    if cursed[c][1] == Leech_Seed_Damage and cursed[c][0] == Pokemon1:
-                        Pokemon2.HP += int(Leech_Seed_Damage/2)
-                    elif cursed[c][1] == Leech_Seed_Damage and cursed[c][0] == Pokemon2:
-                        Pokemon1.HP += int(Leech_Seed_Damage/2)
-                    if len(cursed[c]) > 3:
-                        if cursed[c][3] == "Thunder Wave":
-                            for i in range(0, 3):
-                                Print("Só ", Pokemon1.pokemon_name, "pode jogar")
-                                if cursed[c][0] == Pokemon1:
-                                    Paralized(pcs_turn(Pokemon2), Pokemon1, Pokemon2)
-                                elif cursed[c][0] == Pokemon2:
-                                    Paralized(player1(Pokemon1), Pokemon1, Pokemon2)
-                            cursed.pop(0)
-
-                    for i in range(len(cursed) - len(turn)):
-                        turn.append(0)
-                    if len(turn) > 0:
-                        turn[c] += 1
-
-                if len(turn) > 0:
-                    if turn[c] == 4:
-                        cursed.pop(c)
+        print(Pokemon2.HP)
+        print(Pokemon1.HP)
+fight_1P(Bulbasaur, Charmander)
