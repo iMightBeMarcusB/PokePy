@@ -414,5 +414,3 @@ def fight_1P(Pokemon1,Pokemon2):
                 if len(turn) > 0:
                     if turn[c] == 4:
                         cursed.pop(c)
-
-fight_1P(Pikachu, Charmander)
