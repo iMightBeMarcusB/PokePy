@@ -40,6 +40,7 @@ atk_bar = img('./InterfaceSprites/pp_bar.png')
 title = img('./InterfaceSprites/PokePy.png')
 python = img('./InterfaceSprites/python_logo.png')
 bag_menu = img('./InterfaceSprites/Backpack_menu.png')
+rayquasa_background = img('./InterfaceSprites/Rayquasa_background.png')
 
 ########### SCALE ADJUSTMENTS ###########
 
@@ -52,6 +53,7 @@ atk_bar = scale(atk_bar, (800, 180))
 title = scale(title, (500, 221))
 python = scale(python, (200, 200))
 bag_menu = scale(bag_menu, (800, 600))
+rayquasa_background = scale(rayquasa_background, (800, 600))
 
 ########### ARROW ###########
 
@@ -186,12 +188,13 @@ class SplashScreen(GameState):
             self.done = True
 
     def draw(self, surface):
-        surface.fill(BLACK)
-        surface.blit(title, (29,30))
-        surface.blit(python, (550, 30))
+        surface.blit(rayquasa_background, (0,0))
+        title_rect = title.get_rect()
+        title_rect.center = (400, 200)
+        surface.blit(title, (150,30))
         self.write_text('center', surface, monospace, 25, 'PRESS ANYTHING TO START', 400, 500, WHITE )
 
-class PvPPvE(GameState):
+class Choose_mode(GameState):
     def __init__(self):
         super().__init__()
         self.next_state = 'SELECT POKEMON'
