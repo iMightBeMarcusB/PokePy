@@ -10,7 +10,8 @@ class Arrow:
 
 battle_arrow = Arrow(c.left_a, c.upper_a)
 attack_arrow = Arrow(c.left_attack_a, c.upper_attack_a)
-bag_arrow = Arrow(380, 78)
+bag_arrow = Arrow(c.left_bag_a, c.close_bag_a)
+selection_arrow = Arrow(c.left_selection, c.upper_selection)
 
 ########### GAMEPLAY ###########
 
@@ -75,7 +76,7 @@ class SplashScreen(GameState):
 
     def __init__(self):
         super().__init__()
-        self.next_state = "BATTLE OPTIONS"
+        self.next_state = "POKEMON SELECTION"
 
     def get_event(self, event):
         if event.type == pygame.QUIT:
@@ -90,18 +91,24 @@ class SplashScreen(GameState):
 
 
 class ChooseMode(GameState):
+
+
     def __init__(self):
         super().__init__()
         self.next_state = 'SELECT POKEMON'
 
+
     def startup(self, persistent):
         pass
+
 
     def get_event(self, event):
         pass
 
+
     def update(self, dt):
         pass
+
 
     def draw(self, surface):
         pass
@@ -111,6 +118,35 @@ class SelectPokemon(GameState):
     def __init__(self):
         super().__init__()
         self.next_state = 'BATTLE OPTIONS'
+
+    def startup(self, persistent):
+        pass
+
+    def get_event(self, event):
+
+        if event.type == pygame.QUIT:
+            self.quit = True
+
+        pressed = pygame.key.get_pressed()
+
+        if pressed[pygame.K_RIGHT] and selection_arrow.x == c.left_selection:
+            selection_arrow.x -= c.left_selection - c.right_selection
+        if pressed[pygame.K_LEFT] and selection_arrow.x == c.right_selection:
+            selection_arrow.x += c.left_selection - c.right_selection
+
+        if pressed[pygame.K_UP] and not selection_arrow.y == c.upper_selection:
+            selection_arrow.y -= 61
+        if pressed[pygame.K_DOWN] and not selection_arrow.y == c.bottom_selection:
+            selection_arrow.y += 61
+
+
+
+    def update(self, dt):
+        pass
+
+    def draw(self, surface):
+        surface.blit(c.selection_menu, (0, 0))
+        surface.blit(c.pokeball_pointer, (selection_arrow.x, selection_arrow.y))
 
 
 class BattleOptions(GameState):
@@ -156,8 +192,6 @@ class BattleOptions(GameState):
 
         surface.blit(c.arrow, (battle_arrow.x, battle_arrow.y))
 
-    def persist(self):
-        pass
 
     def update(self, dt):
         pass
