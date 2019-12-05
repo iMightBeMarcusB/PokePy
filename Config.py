@@ -1,6 +1,7 @@
 import pygame
 
 ################### COORDINATES ###################
+
 '''
     posição da seta durante o estágio de
     opções de batalha
@@ -40,12 +41,42 @@ bottom_attack_a = bottom_attack_b - 5
 #######################################
 '''
    posição da seta durante o estágio
-    da mochila'''
+    da mochila
+'''
 
 close_bag_a =(78)
 left_bag_a = (380)
 first_item_a = (118)
 second_item_a = (158)
+
+#######################################
+'''
+    posição dos sprites dos pokemons
+    durante a seleção de pokemons
+'''
+
+#######################################
+'''
+    posição da seta durante a
+    seleção de pokemons
+'''
+
+left_selection = 23
+right_selection = 318
+upper_selection = 94
+bottom_selection = 392
+
+bulbasaur_selection = (23, 94)
+charmander_selection = (23, 156)
+squirtle_selection = (23, 218)
+pikachu_selection = (23, 280)
+pidgeot_selection = (23, 342)
+
+graveler_selection = (318, 94)
+gengar_selection = (318, 156)
+cubone_selection = (318, 218)
+hitmonlee_selection = (318, 280)
+totodile_selection = (318, 342)
 
 ######### COLORS #########
 
@@ -77,15 +108,21 @@ def scale(name, resolution):
 
 ######### BACKGROUND ELEMENTS #########
 
+title = img('./InterfaceSprites/PokePy.png')
+rayquasa_background = img('./InterfaceSprites/Rayquasa_background.png')
+
+
+arrow = img('./InterfaceSprites/arrow.png')
+arrow2 = img('./InterfaceSprites/Arrow2.0.png')
+pokeball_pointer = img('./InterfaceSprites/pokeball_pointer.png')
+
+selection_menu = img('./InterfaceSprites/PokemonSelection2.png')
+
 battle_arena = img('./InterfaceSprites/fgt_background.png')
 txt_bar = img('./InterfaceSprites/text_bar.png')
 fgt_options = img('./InterfaceSprites/fgt_options.png')
-arrow = img('./InterfaceSprites/arrow.png')
-arrow2 = img('./InterfaceSprites/Arrow2.0.png')
 atk_bar = img('./InterfaceSprites/pp_bar.png')
-title = img('./InterfaceSprites/PokePy.png')
 bag_menu = img('./InterfaceSprites/Backpack_menu.png')
-rayquasa_background = img('./InterfaceSprites/Rayquasa_background.png')
 
 ########### SCALE ADJUSTMENTS ###########
 
@@ -98,4 +135,3 @@ atk_bar = scale(atk_bar, (800, 180))
 title = scale(title, (500, 221))
 bag_menu = scale(bag_menu, (800, 600))
 rayquasa_background = scale(rayquasa_background, (800, 600))
-
