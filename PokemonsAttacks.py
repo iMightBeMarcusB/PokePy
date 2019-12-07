@@ -1,5 +1,3 @@
-import Config as c, pygame
-
 ########### ATTACKS ###########
 
 class Attack:
@@ -26,10 +24,3 @@ class pokemon:
         self.defense = Defense
         self.speed = Speed
         self.special_defense = Special_Defense
-
-p1_sprite = 0
-p2_sprite = 1
-
-
-
-
