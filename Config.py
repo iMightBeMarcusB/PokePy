@@ -222,7 +222,7 @@ Growl = pa.Attack("Growl", 0, 25, "Normal", "Status")     #Diminui a defesa do i
     Esse tipo de ataque o patrick explica  q eu não sei
 
 '''
-Leech_Seed = pa.Attack("Leech_Seed", 0, 10, "Grass","Special")    #Planta sementes e rouba vida
+Leech_Seed = pa.Attack("Leech Seed", 0, 10, "Grass","Special")    #Planta sementes e rouba vida
 Curse = pa.Attack("Curse", 0, 10, "Ghost", "Special")  #Perca 25% de vida, mas pode tirar 50% por round do adversario
 Ice_Fang = pa.Attack("Ice Fang", 65, 15, "Ice", "Special")    #10% chance de congelar
 Hex = pa.Attack("Hex ", 65, 10, "Ghost", "Special")    # Dobro de dano se alvo já tiver efeito de contato
