@@ -8,7 +8,8 @@ if __name__ == "__main__":
               "BATTLE OPTIONS": st.BattleOptions(),
               "ATTACK OPTIONS": st.AttackOptions(),
               "BACKPACK": st.Backpack(),
-              "POKEMON SELECTION": st.SelectPokemon()}
+              "PLAYER 1 POKEMON SELECTION": st.SelectPokemonP1(),
+              "PLAYER 2 POKEMON SELECTION": st.SelectPokemonP2()}
     game = ge.Game(screen, states, "SPLASH")
     game.run()
     pygame.quit()
