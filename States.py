@@ -1,4 +1,5 @@
 import Config as c, pygame
+import PokemonsAttacks as pa
 
 ########### ARROW ###########
 
@@ -13,7 +14,7 @@ attack_arrow = Arrow(c.left_attack_a, c.upper_attack_a)
 bag_arrow = Arrow(c.left_bag_a, c.close_bag_a)
 selection_arrow = Arrow(c.left_selection, c.upper_selection)
 
-########### GAMEPLAY ###########
+########### STATES ###########
 
 
 class GameState:
@@ -26,6 +27,7 @@ class GameState:
         self.quit = False
         self.next_state = None
         self.persist = {}
+
 
     def startup(self, persistent):
         """
@@ -76,7 +78,7 @@ class SplashScreen(GameState):
 
     def __init__(self):
         super().__init__()
-        self.next_state = "POKEMON SELECTION"
+        self.next_state = "PLAYER 1 POKEMON SELECTION"
 
     def get_event(self, event):
         if event.type == pygame.QUIT:
@@ -87,7 +89,7 @@ class SplashScreen(GameState):
     def draw(self, surface):
         surface.blit(c.rayquasa_background, (0, 0))
         surface.blit(c.title, (150, 30))
-        self.write_text('center', surface, c.monospace, 25, 'PRESS ANYTHING TO START', 400, 500, c.WHITE)
+        self.write_text('center', surface, c.pixel, 25, 'PRESS ANYTHING TO START', 400, 520, c.WHITE)
 
 
 class ChooseMode(GameState):
@@ -95,7 +97,7 @@ class ChooseMode(GameState):
 
     def __init__(self):
         super().__init__()
-        self.next_state = 'SELECT POKEMON'
+        self.next_state = 'BATTLE OPTIONS'
 
 
     def startup(self, persistent):
@@ -114,10 +116,10 @@ class ChooseMode(GameState):
         pass
 
 
-class SelectPokemon(GameState):
+class SelectPokemonP1(GameState):
     def __init__(self):
         super().__init__()
-        self.next_state = 'BATTLE OPTIONS'
+        self.next_state = 'PLAYER 2 POKEMON SELECTION'
 
     def startup(self, persistent):
         pass
@@ -139,6 +141,52 @@ class SelectPokemon(GameState):
         if pressed[pygame.K_DOWN] and not selection_arrow.y == c.bottom_selection:
             selection_arrow.y += 61
 
+        slct_pos = selection_arrow.position
+
+        if pressed[pygame.K_RETURN]:
+
+            if slct_pos == c.bulbasaur_selection:
+                self.persist['pokemon'] = c.Bulbasaur
+                self.done = True
+
+            elif slct_pos == c.charmander_selection:
+                self.persist['pokemon'] = c.Charmander
+                self.done = True
+
+            elif slct_pos == c.squirtle_selection:
+                self.persist['pokemon'] = c.Squirtle
+                self.done = True
+
+            elif slct_pos == c.pikachu_selection:
+                self.persist['pokemon'] = c.Pikachu
+                self.done = True
+
+            elif slct_pos == c.pidgeot_selection:
+                self.persist['pokemon'] = c.Pidgeot
+                self.done = True
+
+
+            elif slct_pos == c.graveler_selection:
+                self.persist['pokemon'] = c.Graveler
+                self.done = True
+
+
+            elif slct_pos == c.gengar_selection:
+                self.persist['pokemon'] = c.Gengar
+                self.done = True
+
+            elif slct_pos == c.cubone_selection:
+                self.persist['pokemon'] = c.Cubone
+                self.done = True
+
+            elif slct_pos == c.hitmonlee_selection:
+                self.persist['pokemon'] = c.Hitmonlee
+                self.done = True
+
+            elif slct_pos == c.totodile_selection:
+                print('hello')
+
+            selection_arrow.x, selection_arrow.y = c.left_selection, c.upper_selection
 
 
     def update(self, dt):
@@ -148,10 +196,92 @@ class SelectPokemon(GameState):
         surface.blit(c.selection_menu, (0, 0))
         surface.blit(c.pokeball_pointer, (selection_arrow.x, selection_arrow.y))
 
+        self.write_text('topleft', surface, c.monospace, 16, 'Player 1 select your pokemon', 20, 67, c.BLACK)
+
+
+class SelectPokemonP2(GameState):
+        def __init__(self):
+            super().__init__()
+            self.next_state = 'BATTLE OPTIONS'
+
+
+        def get_event(self, event):
+
+            if event.type == pygame.QUIT:
+                self.quit = True
+
+            pressed = pygame.key.get_pressed()
+
+            if pressed[pygame.K_RIGHT] and selection_arrow.x == c.left_selection:
+                selection_arrow.x -= c.left_selection - c.right_selection
+            if pressed[pygame.K_LEFT] and selection_arrow.x == c.right_selection:
+                selection_arrow.x += c.left_selection - c.right_selection
+
+            if pressed[pygame.K_UP] and not selection_arrow.y == c.upper_selection:
+                selection_arrow.y -= 61
+            if pressed[pygame.K_DOWN] and not selection_arrow.y == c.bottom_selection:
+                selection_arrow.y += 61
+
+            slct_pos = selection_arrow.position
+
+            pokemon2 = None
+
+            if pressed[pygame.K_RETURN]:
+
+                if slct_pos == c.bulbasaur_selection:
+                    pokemon2 = c.Bulbasaur
+                    self.done = True
+
+                elif slct_pos == c.charmander_selection:
+                    pokemon2 = c.Charmander_
+                    self.done = True
+
+                elif slct_pos == c.squirtle_selection:
+                    pokemon2 = c.Squirtle_
+                    self.done = True
+
+                elif slct_pos == c.pikachu_selection:
+                    pokemon2 = c.Pikachu_
+                    self.done = True
+
+                elif slct_pos == c.pidgeot_selection:
+                    pokemon2 = c.Pidgeot_
+                    self.done = True
+
+
+                elif slct_pos == c.graveler_selection:
+                    pokemon2 = c.Graveler_
+                    self.done = True
+
+
+                elif slct_pos == c.gengar_selection:
+                    pokemon2 = c.Gengar_
+                    self.done = True
+
+                elif slct_pos == c.cubone_selection:
+                    pokemon2 = c.Cubone_
+                    self.done = True
+
+                elif slct_pos == c.hitmonlee_selection:
+                    pokemon2 = c.Hitmonlee_
+                    self.done = True
+
+                elif slct_pos == c.totodile_selection:
+                    print('hello')
+
+        def update(self, dt):
+            pass
+
+        def draw(self, surface):
+            surface.blit(c.selection_menu, (0, 0))
+            surface.blit(c.pokeball_pointer, (selection_arrow.x, selection_arrow.y))
+            self.write_text('topleft', surface, c.monospace, 16, 'Player 2 select your pokemon', 20, 67, c.BLACK)
+
 
 class BattleOptions(GameState):
     def __init__(self):
         super().__init__()
+
 
     def startup(self, persistent):
         pass
@@ -190,11 +320,13 @@ class BattleOptions(GameState):
         surface.blit(c.txt_bar, (0, 420))
         surface.blit(c.fgt_options, (400, 420))
 
+        p1_sprite = 0
+        p2_sprite = 1
+
+        #surface.blit(, (100,100))
+
+
         surface.blit(c.arrow, (battle_arrow.x, battle_arrow.y))
-
-
-    def update(self, dt):
-        pass
 
 
 class AttackOptions(GameState):
@@ -234,14 +366,14 @@ class AttackOptions(GameState):
         surface.blit(c.atk_bar, (0, 420))
         surface.blit(c.arrow, (attack_arrow.x, attack_arrow.y))
 
-        attack1 = 'cala'
-        attack2 = 'a boca'
-        attack3 = 'vadia'
-        attack4 = 'puta'
+        attack1 = 'oi'
+        attack2 = 'oi'
+        attack3 = 'oi'
+        attack4 = 'oi'
 
-        self.write_text('topleft', surface, c.monospace, 20, attack1, c.left_attack_b, c.upper_attack_b, c.GRAY)
-        self.write_text('topleft', surface, c.monospace, 20, attack2, c.right_attack_b, c.upper_attack_b, c.GRAY)
-        self.write_text('topleft', surface, c.monospace, 20, attack3, c.left_attack_b, c.bottom_attack_b, c.GRAY)
+        self.write_text('topleft', surface, c.verdana, 20, attack1, c.left_attack_b, c.upper_attack_b, c.GRAY)
+        self.write_text('topleft', surface, c.manaspc, 20, attack2, c.right_attack_b, c.upper_attack_b, c.GRAY)
+        self.write_text('topleft', surface, c.pixel, 20, attack3, c.left_attack_b, c.bottom_attack_b, c.GRAY)
         self.write_text('topleft', surface, c.monospace, 20, attack4, c.right_attack_b, c.bottom_attack_b, c.GRAY)
 
 
