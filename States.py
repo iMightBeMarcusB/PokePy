@@ -14,6 +14,14 @@ attack_arrow = Arrow(c.left_attack_a, c.upper_attack_a)
 bag_arrow = Arrow(c.left_bag_a, c.close_bag_a)
 selection_arrow = Arrow(c.left_selection, c.upper_selection)
 
+########### POKEMONS ###########
+
+class Pokemons:
+    def __init__(self):
+        self.pokemon1 = None
+        self.pokemon2 = None
+
+
 ########### STATES ###########
 
 
@@ -146,41 +154,41 @@ class SelectPokemonP1(GameState):
         if pressed[pygame.K_RETURN]:
 
             if slct_pos == c.bulbasaur_selection:
-                self.persist['pokemon'] = c.Bulbasaur
+                Pokemons.pokemon1 = c.Bulbasaur
                 self.done = True
 
             elif slct_pos == c.charmander_selection:
-                self.persist['pokemon'] = c.Charmander
+                s.persist['pokemon'] = c.Charmander
                 self.done = True
 
             elif slct_pos == c.squirtle_selection:
-                self.persist['pokemon'] = c.Squirtle
+                Pokemons.pokemon1 = c.Squirtle
                 self.done = True
 
             elif slct_pos == c.pikachu_selection:
-                self.persist['pokemon'] = c.Pikachu
+                Pokemons.pokemon1 = c.Pikachu
                 self.done = True
 
             elif slct_pos == c.pidgeot_selection:
-                self.persist['pokemon'] = c.Pidgeot
+                Pokemons.pokemon1 = c.Pidgeot
                 self.done = True
 
 
             elif slct_pos == c.graveler_selection:
-                self.persist['pokemon'] = c.Graveler
+                Pokemons.pokemon1 = c.Graveler
                 self.done = True
 
 
             elif slct_pos == c.gengar_selection:
-                self.persist['pokemon'] = c.Gengar
+                Pokemons.pokemon1 = c.Gengar
                 self.done = True
 
             elif slct_pos == c.cubone_selection:
-                self.persist['pokemon'] = c.Cubone
+                Pokemons.pokemon1 = c.Cubone
                 self.done = True
 
             elif slct_pos == c.hitmonlee_selection:
-                self.persist['pokemon'] = c.Hitmonlee
+                Pokemons.pokemon1 = c.Hitmonlee
                 self.done = True
 
             elif slct_pos == c.totodile_selection:
@@ -323,7 +331,7 @@ class BattleOptions(GameState):
         p1_sprite = 0
         p2_sprite = 1
 
-        #surface.blit(, (100,100))
+        surface.blit(Pokemons.pokemon1.sprite, (100,100))
 
 
         surface.blit(c.arrow, (battle_arrow.x, battle_arrow.y))
@@ -366,14 +374,14 @@ class AttackOptions(GameState):
         surface.blit(c.atk_bar, (0, 420))
         surface.blit(c.arrow, (attack_arrow.x, attack_arrow.y))
 
-        attack1 = 'oi'
-        attack2 = 'oi'
-        attack3 = 'oi'
-        attack4 = 'oi'
+        attack1 = str(Pokemons.pokemon1.atk1.name)
+        attack2 = str(Pokemons.pokemon1.atk2.name)
+        attack3 = str(Pokemons.pokemon1.atk3.name)
+        attack4 = str(Pokemons.pokemon1.atk4.name)
 
-        self.write_text('topleft', surface, c.verdana, 20, attack1, c.left_attack_b, c.upper_attack_b, c.GRAY)
-        self.write_text('topleft', surface, c.manaspc, 20, attack2, c.right_attack_b, c.upper_attack_b, c.GRAY)
-        self.write_text('topleft', surface, c.pixel, 20, attack3, c.left_attack_b, c.bottom_attack_b, c.GRAY)
+        self.write_text('topleft', surface, c.monospace, 20, attack1, c.left_attack_b, c.upper_attack_b, c.GRAY)
+        self.write_text('topleft', surface, c.monospace, 20, attack2, c.right_attack_b, c.upper_attack_b, c.GRAY)
+        self.write_text('topleft', surface, c.monospace, 20, attack3, c.left_attack_b, c.bottom_attack_b, c.GRAY)
         self.write_text('topleft', surface, c.monospace, 20, attack4, c.right_attack_b, c.bottom_attack_b, c.GRAY)
 
 
@@ -423,3 +431,5 @@ class Backpack(GameState):
         self.write_text('topleft', surface, c.monospace, 30, 'SUPERPOTION', 420, 154, c.BLACK)
 
         surface.blit(c.arrow2, (bag_arrow.x, bag_arrow.y))
+
+########### POKEMONS ###########
